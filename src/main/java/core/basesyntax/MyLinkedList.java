@@ -108,25 +108,29 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
         return oldValue;
     }
 
+    private void unlink(Node current) {
+        if (size == 1) {
+            first = null;
+            last = null;
+        } else if (current == first) {
+            first = first.next;
+            first.prev = null;
+        } else if (current == last) {
+            last = last.prev;
+            last.next = null;
+        } else {
+            current.prev.next = current.next;
+            current.next.prev = current.prev;
+        }
+        size--;
+    }
+
     @Override
     public T remove(int index) {
         checkIndex(index);
         Node target = getNode(index);
         T removedValue = target.value;
-        if (size == 1) {
-            first = null;
-            last = null;
-        } else if (index == 0) {
-            first = first.next;
-            first.prev = null;
-        } else if (index == size - 1) {
-            last = last.prev;
-            last.next = null;
-        } else {
-            target.prev.next = target.next;
-            target.next.prev = target.prev;
-        }
-        size--;
+        unlink(target);
         return removedValue;
     }
 
@@ -136,20 +140,7 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
         while (current != null) {
             if ((object == null && current.value == null) || (object != null
                     && object.equals(current.value))) {
-                if (size == 1) {
-                    first = null;
-                    last = null;
-                } else if (current == first) {
-                    first = first.next;
-                    first.prev = null;
-                } else if (current == last) {
-                    last = last.prev;
-                    last.next = null;
-                } else {
-                    current.prev.next = current.next;
-                    current.next.prev = current.prev;
-                }
-                size--;
+                unlink(current);
                 return true;
             }
             current = current.next;
