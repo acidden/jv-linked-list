@@ -112,7 +112,7 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
     public T remove(int index) {
         checkIndex(index);
         Node target = getNode(index);
-        T removedValue = target.value; // С
+        T removedValue = target.value;
         if (size == 1) {
             first = null;
             last = null;
